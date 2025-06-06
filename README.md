@@ -85,12 +85,6 @@ cd fastfetch
 ./install.sh -v or --version
 ```
 
-<!-- The FAQ section is optional. Remove if needed.-->
-## 🙋 FAQ
-
-- Q: **_"How can I do X?"_**\
-  A: ...
-
 ## 💝 Thanks to
 
 - [Nukecraft5419](https://github.com/Nukecraft5419)
