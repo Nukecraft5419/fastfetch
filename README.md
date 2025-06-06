@@ -36,9 +36,54 @@
 
 ## Usage
 
-1. Download the flavor of your choice.
-2. Open the app and go to **Preferences** > **Appearance** > **Import theme**.
-3. Select the downloaded flavor file.
+1. Clone this repository:
+```bash
+git clone https://github.com/catppuccin/fastfetch.git
+```
+2. Enter the repository folder:
+```bash 
+cd fastfetch
+```
+3. Run the installation script: 
+```bash
+./install.sh
+```
+
+## Additional install.sh commands
+
+1. Launches the interactive install menu.
+```bash 
+./install.sh
+```
+
+2. Installs a specific theme directly (e.g., Latte, Frappe, Macchiato, Mocha).
+```bash
+./install.sh <FlavorName>
+```
+
+3. Shows help information.
+```bash
+./install.sh -h or --help
+```
+4. Lists all available flavors.
+```bash
+./install.sh -l or --list
+```
+
+5. Creates a backup of current configuration before applying changes.
+```bash
+./install.sh -b or --list-backups
+```
+
+6. Uninstalls the theme and restores backups.
+```bash
+./install.sh -u or --uninstall
+```
+
+7. Displays the script version.
+```bash
+./install.sh -v or --version
+```
 
 <!-- The FAQ section is optional. Remove if needed.-->
 ## 🙋 FAQ
