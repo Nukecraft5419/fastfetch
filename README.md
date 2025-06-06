@@ -48,7 +48,7 @@
 
 ## 💝 Thanks to
 
-- [Human](https://github.com/catppuccin)
+- [Nukecraft5419](https://github.com/Nukecraft5419)
 
 &nbsp;
 
