@@ -20,6 +20,12 @@ BACKUP_DIR="$CONFIG_DIR/backups"
 LOGO_DIR="$CONFIG_DIR/logo"
 LOGO_FILE="$LOGO_DIR/catppuccin_logo.png"
 
+# === Check if Fastfetch is installed ===
+if ! command -v fastfetch &> /dev/null; then
+    echo -e "${RED}❌  Fastfetch is not installed. Please install it to continue.${NC}"
+    exit 1
+fi
+
 # === Banner ASCII ===
 catppuccin_banner() {
     echo -e "${MAGENTA}"
