@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# === Info ===
+# ==================================================
+# Script Information
+# ==================================================
 VERSION="1.0.0"
 YEAR="2025"
 
-# === Colori ===
+# ==================================================
+# Terminal Colors
+# ==================================================
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -13,20 +17,26 @@ CYAN='\033[1;36m'
 MAGENTA='\033[0;35m'
 NC='\033[0m'
 
-# === Percorsi ===
+# ==================================================
+# Configuration Paths
+# ==================================================
 CONFIG_DIR="$HOME/.config/fastfetch"
 CONFIG_FILE="$CONFIG_DIR/config.jsonc"
 BACKUP_DIR="$CONFIG_DIR/backups"
 LOGO_DIR="$CONFIG_DIR/logo"
 LOGO_FILE="$LOGO_DIR/catppuccin_logo.png"
 
-# === Check if Fastfetch is installed ===
+# ==================================================
+# Ensure Fastfetch is installed
+# ==================================================
 if ! command -v fastfetch &> /dev/null; then
     echo -e "${RED}❌  Fastfetch is not installed. Please install it to continue.${NC}"
     exit 1
 fi
 
-# === Banner ASCII ===
+# ==================================================
+# ASCII Banner
+# ==================================================
 catppuccin_banner() {
     echo -e "${MAGENTA}"
     echo "  "
@@ -41,7 +51,9 @@ catppuccin_banner() {
     echo -e "   ${CYAN}Catppuccin Fastfetch Theme Manager v$VERSION — © $YEAR MIT License${NC}\n"
 }
 
-# === Help ===
+# ==================================================
+# Help Message
+# ==================================================
 print_help() {
     catppuccin_banner
     echo -e "${BLUE}Usage:${NC} ./install.sh [OPTION] [THEME]"
@@ -56,14 +68,18 @@ print_help() {
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
-# === Version ===
+# ==================================================
+# Version Info
+# ==================================================
 print_version() {
     echo -e "Catppuccin Fastfetch Theme Manager v$VERSION — © $YEAR"
     echo
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
-# === Conferma disinstallazione ===
+# ==================================================
+# Uninstall Confirmation
+# ==================================================
 confirm_uninstall() {
     echo -e "${YELLOW}⚠️  Are you sure you want to uninstall the Catppuccin Fastfetch theme? [y/N] ${NC}"
     read -r response
@@ -75,7 +91,9 @@ confirm_uninstall() {
     esac
 }
 
-# === Ripristina ultimo backup ===
+# ==================================================
+# Restore Last Backup
+# ==================================================
 restore_backup() {
     if [[ -d "$BACKUP_DIR" && $(ls -1 "$BACKUP_DIR" | wc -l) -gt 0 ]]; then
         LAST_BACKUP=$(ls -1t "$BACKUP_DIR"/config_*.jsonc | head -n 1)
@@ -87,14 +105,18 @@ restore_backup() {
     fi
 }
 
-# === Pulisci file residui ===
+# ==================================================
+# Remove Residual Files
+# ==================================================
 cleanup_files() {
     [[ -f "$LOGO_FILE" ]] && rm -f "$LOGO_FILE" && echo -e "${GREEN}✅  Removed logo.${NC}"
     [[ -d "$LOGO_DIR" && -z "$(ls -A "$LOGO_DIR")" ]] && rmdir "$LOGO_DIR" && echo -e "${GREEN}✅  Removed empty logo directory.${NC}"
     [[ -d "$BACKUP_DIR" && -z "$(ls -A "$BACKUP_DIR")" ]] && rmdir "$BACKUP_DIR" && echo -e "${GREEN}✅  Removed empty backup directory.${NC}"
 }
 
-# === Disinstalla tema ===
+# ==================================================
+# Uninstall Theme
+# ==================================================
 uninstall_theme() {
     if ! confirm_uninstall; then
         return 0
@@ -105,7 +127,9 @@ uninstall_theme() {
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
-# === Lista backup ===
+# ==================================================
+# List Backup Files
+# ==================================================
 list_backups() {
     echo -e "${MAGENTA}📂  Backups in $BACKUP_DIR:${NC}"
     ls "$BACKUP_DIR" 2>/dev/null || echo -e "${YELLOW}No backups found.${NC}"
@@ -113,25 +137,27 @@ list_backups() {
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
-# === Installa tema ===
+# ==================================================
+# Install Selected Theme
+# ==================================================
 install_theme() {
     THEME="$1"
 
-    # Controlla file tema
+    # Check theme files
     if [[ ! -f "themes/Catppuccin-$THEME/config.jsonc" ]]; then
         echo -e "${RED}❌  Theme file not found: themes/Catppuccin-$THEME/config.jsonc${NC}"
         read -n1 -r -p "Press any key to return to menu..." key
         return 0
     fi
 
-    # Controlla logo
+    # Check logo
     if [[ ! -f "themes/Catppuccin-$THEME/logo/catppuccin_logo.png" ]]; then
         echo -e "${RED}❌  Logo file not found: themes/Catppuccin-$THEME/logo/catppuccin_logo.png${NC}"
         read -n1 -r -p "Press any key to return to menu..." key
         return 0
     fi
 
-    # Crea directory se non esistono
+    # Create directories if they don't exist
     mkdir -p "$BACKUP_DIR" "$LOGO_DIR"
 
     # Backup
@@ -141,7 +167,7 @@ install_theme() {
         echo -e "${BLUE}📦  Backup created: config_$TIMESTAMP.jsonc${NC}"
     fi
 
-    # Copia config e logo
+    # Copy config and logo
     cp "themes/Catppuccin-$THEME/config.jsonc" "$CONFIG_FILE"
     cp "themes/Catppuccin-$THEME/logo/catppuccin_logo.png" "$LOGO_FILE"
     echo -e "${GREEN}✅  Installed theme flavor: $THEME${NC}"
@@ -150,7 +176,9 @@ install_theme() {
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
-# === Menu interattivo ===
+# ==================================================
+# Interactive Menu
+# ==================================================
 interactive_menu() {
     clear
     catppuccin_banner
@@ -182,7 +210,9 @@ interactive_menu() {
     esac
 }
 
-# === MAIN ===
+# ==================================================
+# Main Entry Point
+# ==================================================
 if [[ $# -eq 0 ]]; then
     while true; do
         interactive_menu
