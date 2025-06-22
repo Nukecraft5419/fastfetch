@@ -25,6 +25,7 @@ CONFIG_FILE="$CONFIG_DIR/config.jsonc"
 BACKUP_DIR="$CONFIG_DIR/backups"
 LOGO_DIR="$CONFIG_DIR/logo"
 LOGO_FILE="$LOGO_DIR/catppuccin_logo.png"
+LOGO_PREINSTALL="assets/logo/catppuccin_logo.png"
 
 # ==================================================
 # Ensure Fastfetch is installed
@@ -151,8 +152,8 @@ install_theme() {
     fi
 
     # Check logo
-    if [[ ! -f "themes/Catppuccin-$THEME/logo/catppuccin_logo.png" ]]; then
-        echo -e "${RED}❌  Logo file not found: themes/Catppuccin-$THEME/logo/catppuccin_logo.png${NC}"
+    if [[ ! -f "$LOGO_PREINSTALL" ]]; then
+        echo -e "${RED}❌  Logo file not found: $LOGO_PREINSTALL${NC}"
         read -n1 -r -p "Press any key to return to menu..." key
         return 0
     fi
@@ -169,7 +170,7 @@ install_theme() {
 
     # Copy config and logo
     cp "themes/Catppuccin-$THEME/config.jsonc" "$CONFIG_FILE"
-    cp "themes/Catppuccin-$THEME/logo/catppuccin_logo.png" "$LOGO_FILE"
+    cp "$LOGO_PREINSTALL" "$LOGO_FILE"
     echo -e "${GREEN}✅  Installed theme flavor: $THEME${NC}"
     echo -e "${GREEN}✅  Logo installed to: $LOGO_FILE${NC}"
     echo
