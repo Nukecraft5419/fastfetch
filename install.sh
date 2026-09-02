@@ -129,6 +129,11 @@ restore_backup() {
 cleanup_files() {
     [[ -f "$LOGO_FILE" ]] && rm -f "$LOGO_FILE" && echo -e "${GREEN}✅  Removed logo.${NC}"
     [[ -d "$LOGO_DIR" && -z "$(ls -A "$LOGO_DIR")" ]] && rmdir "$LOGO_DIR" && echo -e "${GREEN}✅  Removed empty logo directory.${NC}"
+
+    # Remove original-state markers so next install starts clean
+    [[ -f "$BACKUP_DIR/original_state" ]] && rm -f "$BACKUP_DIR/original_state"
+    [[ -f "$BACKUP_DIR/original_config.jsonc" ]] && rm -f "$BACKUP_DIR/original_config.jsonc"
+
     [[ -d "$BACKUP_DIR" && -z "$(ls -A "$BACKUP_DIR")" ]] && rmdir "$BACKUP_DIR" && echo -e "${GREEN}✅  Removed empty backup directory.${NC}"
 }
 
