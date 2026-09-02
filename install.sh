@@ -161,7 +161,19 @@ install_theme() {
     # Create directories if they don't exist
     mkdir -p "$BACKUP_DIR" "$LOGO_DIR"
 
-    # Backup
+    # Save original state only once (first install ever)
+    if [[ ! -f "$BACKUP_DIR/original_state" ]]; then
+        if [[ -f "$CONFIG_FILE" ]]; then
+            cp "$CONFIG_FILE" "$BACKUP_DIR/original_config.jsonc"
+            echo "config" > "$BACKUP_DIR/original_state"
+            echo -e "${BLUE}📦  Original config saved${NC}"
+        else
+            echo "empty" > "$BACKUP_DIR/original_state"
+            echo -e "${BLUE}📦  Original state marked as empty${NC}"
+        fi
+    fi
+
+    # Timestamped backup of current config (for history)
     TIMESTAMP=$(date +%Y%m%d%H%M%S)
     if [[ -f "$CONFIG_FILE" ]]; then
         cp "$CONFIG_FILE" "$BACKUP_DIR/config_$TIMESTAMP.jsonc"
