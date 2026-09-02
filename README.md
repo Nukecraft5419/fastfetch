@@ -37,14 +37,19 @@
 ## Usage
 
 1. Clone this repository:
+
 ```bash
 git clone https://github.com/catppuccin/fastfetch.git
 ```
+
 2. Enter the repository folder:
-```bash 
+
+```bash
 cd fastfetch
 ```
-3. Run the installation script: 
+
+3. Run the installation script:
+
 ```bash
 ./install.sh
 ```
@@ -52,35 +57,43 @@ cd fastfetch
 ## Additional install.sh commands
 
 1. Launches the interactive install menu.
-```bash 
+
+```bash
 ./install.sh
 ```
 
 2. Installs a specific theme directly (e.g., Latte, Frappe, Macchiato, Mocha).
+
 ```bash
 ./install.sh <FlavorName>
 ```
 
 3. Shows help information.
+
 ```bash
 ./install.sh -h or --help
 ```
+
 4. Lists all available flavors.
+
 ```bash
 ./install.sh -l or --list
 ```
 
 5. Creates a backup of current configuration before applying changes.
+
 ```bash
 ./install.sh -b or --list-backups
 ```
 
 6. Uninstalls the theme and restores backups.
+
 ```bash
 ./install.sh -u or --uninstall
 ```
 
 7. Displays the script version.
+
 ```bash
 ./install.sh -v or --version
 ```
@@ -96,7 +109,7 @@ cd fastfetch
 </p>
 
 <p align="center">
-	Copyright &copy; 2025-present <a href="https://github.com/catppuccin" target="_blank">Catppuccin Org</a>
+	Copyright &copy; 2026-present <a href="https://github.com/catppuccin" target="_blank">Catppuccin Org</a>
 </p>
 
 <p align="center">
