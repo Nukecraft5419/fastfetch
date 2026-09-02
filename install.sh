@@ -4,7 +4,7 @@
 # Script Information
 # ==================================================
 VERSION="1.0.0"
-YEAR="2025"
+YEAR="2026"
 
 # ==================================================
 # Terminal Colors
@@ -31,7 +31,7 @@ LOGO_PREINSTALL="assets/logo/catppuccin_logo.png"
 # Ensure Fastfetch is installed
 # ==================================================
 if ! command -v fastfetch &> /dev/null; then
-    echo -e "${RED}❌  Fastfetch is not installed. Please install it to continue.${NC}"
+    echo -e "${RED}❌ Fastfetch is not installed. Please install it to continue.${NC}"
     exit 1
 fi
 
@@ -49,7 +49,7 @@ catppuccin_banner() {
     echo "              \/     \/                  \/          \/     \/  "
     echo "  "
     echo -e "${NC}"
-    echo -e "   ${CYAN}Catppuccin Fastfetch Theme Manager v$VERSION — © $YEAR MIT License${NC}\n"
+    echo -e "${CYAN}Catppuccin Fastfetch Theme Manager v$VERSION — © $YEAR MIT License${NC}\n"
 }
 
 # ==================================================
@@ -82,11 +82,11 @@ print_version() {
 # Uninstall Confirmation
 # ==================================================
 confirm_uninstall() {
-    echo -e "${YELLOW}⚠️  Are you sure you want to uninstall the Catppuccin Fastfetch theme? [y/N] ${NC}"
+    echo -e "${YELLOW}⚠️ Are you sure you want to uninstall the Catppuccin Fastfetch theme? [y/N] ${NC}"
     read -r response
     case "$response" in
         [yY][eE][sS]|[yY]) ;; # Procedi
-        *) echo -e "${BLUE}ℹ️  Uninstall cancelled.${NC}"
+        *) echo -e "${BLUE}ℹ️ Uninstall cancelled.${NC}"
             read -n1 -r -p "Press any key to return to menu..." key
         return 1 ;;
     esac
@@ -101,12 +101,12 @@ restore_backup() {
         STATE=$(cat "$BACKUP_DIR/original_state")
         if [[ "$STATE" == "empty" ]]; then
             rm -f "$CONFIG_FILE"
-            echo -e "${GREEN}✅  Restored to original empty state (no config)${NC}"
+            echo -e "${GREEN}✅ Restored to original empty state (no config)${NC}"
         elif [[ "$STATE" == "config" && -f "$BACKUP_DIR/original_config.jsonc" ]]; then
             cp "$BACKUP_DIR/original_config.jsonc" "$CONFIG_FILE"
-            echo -e "${GREEN}✅  Restored original config${NC}"
+            echo -e "${GREEN}✅ Restored original config${NC}"
         else
-            echo -e "${YELLOW}⚠️  Original state marker invalid. Falling back...${NC}"
+            echo -e "${YELLOW}⚠️ Original state marker invalid. Falling back...${NC}"
             # fallthrough to last backup
         fi
         return 0
@@ -116,9 +116,9 @@ restore_backup() {
     if [[ -d "$BACKUP_DIR" && $(ls -1 "$BACKUP_DIR"/config_*.jsonc 2>/dev/null | wc -l) -gt 0 ]]; then
         LAST_BACKUP=$(ls -1t "$BACKUP_DIR"/config_*.jsonc | head -n 1)
         cp "$LAST_BACKUP" "$CONFIG_FILE"
-        echo -e "${GREEN}✅  Restored last backup: $(basename "$LAST_BACKUP")${NC}"
+        echo -e "${GREEN}✅ Restored last backup: $(basename "$LAST_BACKUP")${NC}"
     else
-        echo -e "${YELLOW}⚠️  No backups found. Removing config.jsonc.${NC}"
+        echo -e "${YELLOW}⚠️ No backups found. Removing config.jsonc.${NC}"
         rm -f "$CONFIG_FILE"
     fi
 }
@@ -127,14 +127,14 @@ restore_backup() {
 # Remove Residual Files
 # ==================================================
 cleanup_files() {
-    [[ -f "$LOGO_FILE" ]] && rm -f "$LOGO_FILE" && echo -e "${GREEN}✅  Removed logo.${NC}"
-    [[ -d "$LOGO_DIR" && -z "$(ls -A "$LOGO_DIR")" ]] && rmdir "$LOGO_DIR" && echo -e "${GREEN}✅  Removed empty logo directory.${NC}"
+    [[ -f "$LOGO_FILE" ]] && rm -f "$LOGO_FILE" && echo -e "${GREEN}✅ Removed logo.${NC}"
+    [[ -d "$LOGO_DIR" && -z "$(ls -A "$LOGO_DIR")" ]] && rmdir "$LOGO_DIR" && echo -e "${GREEN}✅ Removed empty logo directory.${NC}"
 
     # Remove original-state markers so next install starts clean
     [[ -f "$BACKUP_DIR/original_state" ]] && rm -f "$BACKUP_DIR/original_state"
     [[ -f "$BACKUP_DIR/original_config.jsonc" ]] && rm -f "$BACKUP_DIR/original_config.jsonc"
 
-    [[ -d "$BACKUP_DIR" && -z "$(ls -A "$BACKUP_DIR")" ]] && rmdir "$BACKUP_DIR" && echo -e "${GREEN}✅  Removed empty backup directory.${NC}"
+    [[ -d "$BACKUP_DIR" && -z "$(ls -A "$BACKUP_DIR")" ]] && rmdir "$BACKUP_DIR" && echo -e "${GREEN}✅ Removed empty backup directory.${NC}"
 }
 
 # ==================================================
@@ -146,7 +146,7 @@ uninstall_theme() {
     fi
     restore_backup
     cleanup_files
-    echo -e "${BLUE}ℹ️  Uninstallation completed.${NC}"
+    echo -e "${BLUE}ℹ️ Uninstallation completed.${NC}"
     read -n1 -r -p "Press any key to return to menu..." key
 }
 
@@ -154,7 +154,7 @@ uninstall_theme() {
 # List Backup Files
 # ==================================================
 list_backups() {
-    echo -e "${MAGENTA}📂  Backups in $BACKUP_DIR:${NC}"
+    echo -e "${MAGENTA}📂 Backups in $BACKUP_DIR:${NC}"
     ls "$BACKUP_DIR" 2>/dev/null || echo -e "${YELLOW}No backups found.${NC}"
     echo
     read -n1 -r -p "Press any key to return to menu..." key
@@ -168,14 +168,14 @@ install_theme() {
 
     # Check theme files
     if [[ ! -f "themes/Catppuccin-$THEME/config.jsonc" ]]; then
-        echo -e "${RED}❌  Theme file not found: themes/Catppuccin-$THEME/config.jsonc${NC}"
+        echo -e "${RED}❌ Theme file not found: themes/Catppuccin-$THEME/config.jsonc${NC}"
         read -n1 -r -p "Press any key to return to menu..." key
         return 0
     fi
 
     # Check logo
     if [[ ! -f "$LOGO_PREINSTALL" ]]; then
-        echo -e "${RED}❌  Logo file not found: $LOGO_PREINSTALL${NC}"
+        echo -e "${RED}❌ Logo file not found: $LOGO_PREINSTALL${NC}"
         read -n1 -r -p "Press any key to return to menu..." key
         return 0
     fi
@@ -188,10 +188,10 @@ install_theme() {
         if [[ -f "$CONFIG_FILE" ]]; then
             cp "$CONFIG_FILE" "$BACKUP_DIR/original_config.jsonc"
             echo "config" > "$BACKUP_DIR/original_state"
-            echo -e "${BLUE}📦  Original config saved${NC}"
+            echo -e "${BLUE}📦 Original config saved${NC}"
         else
             echo "empty" > "$BACKUP_DIR/original_state"
-            echo -e "${BLUE}📦  Original state marked as empty${NC}"
+            echo -e "${BLUE}📦 Original state marked as empty${NC}"
         fi
     fi
 
@@ -199,14 +199,14 @@ install_theme() {
     TIMESTAMP=$(date +%Y%m%d%H%M%S)
     if [[ -f "$CONFIG_FILE" ]]; then
         cp "$CONFIG_FILE" "$BACKUP_DIR/config_$TIMESTAMP.jsonc"
-        echo -e "${BLUE}📦  Backup created: config_$TIMESTAMP.jsonc${NC}"
+        echo -e "${BLUE}📦 Backup created: config_$TIMESTAMP.jsonc${NC}"
     fi
 
     # Copy config and logo
     cp "themes/Catppuccin-$THEME/config.jsonc" "$CONFIG_FILE"
     cp "$LOGO_PREINSTALL" "$LOGO_FILE"
-    echo -e "${GREEN}✅  Installed theme flavor: $THEME${NC}"
-    echo -e "${GREEN}✅  Logo installed to: $LOGO_FILE${NC}"
+    echo -e "${GREEN}✅ Installed theme flavor: $THEME${NC}"
+    echo -e "${GREEN}✅ Logo installed to: $LOGO_FILE${NC}"
     echo
     read -n1 -r -p "Press any key to return to menu..." key
 }
@@ -239,8 +239,8 @@ interactive_menu() {
         6) uninstall_theme ;;
         7) print_version ;;
         8) print_help ;;
-        9) echo -e "${CYAN}👋  Goodbye!${NC}"; exit 0 ;;
-        *) echo -e "${RED}❌  Invalid choice.${NC}"
+        9) echo -e "${CYAN}👋 Goodbye!${NC}"; exit 0 ;;
+        *) echo -e "${RED}❌ Invalid choice.${NC}"
         read -n1 -r -p "Press any key to return to menu..." key ;;
     esac
 }
@@ -267,7 +267,7 @@ else
             exit 0
         ;;
         -b|--list-backups)
-            echo -e "${MAGENTA}📂  Backups in $BACKUP_DIR:${NC}"
+            echo -e "${MAGENTA}📂 Backups in $BACKUP_DIR:${NC}"
             ls "$BACKUP_DIR" 2>/dev/null || echo -e "${YELLOW}No backups found.${NC}"
             exit 0
         ;;
@@ -280,7 +280,7 @@ else
             exit 0
         ;;
         *)
-            echo -e "${RED}❌  Invalid option or theme: $1${NC}"
+            echo -e "${RED}❌ Invalid option or theme: $1${NC}"
             print_help
             exit 1
         ;;
