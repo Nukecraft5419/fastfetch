@@ -96,7 +96,24 @@ confirm_uninstall() {
 # Restore Last Backup
 # ==================================================
 restore_backup() {
-    if [[ -d "$BACKUP_DIR" && $(ls -1 "$BACKUP_DIR" | wc -l) -gt 0 ]]; then
+    # Prefer true original state (saved only on first install)
+    if [[ -f "$BACKUP_DIR/original_state" ]]; then
+        STATE=$(cat "$BACKUP_DIR/original_state")
+        if [[ "$STATE" == "empty" ]]; then
+            rm -f "$CONFIG_FILE"
+            echo -e "${GREEN}✅  Restored to original empty state (no config)${NC}"
+        elif [[ "$STATE" == "config" && -f "$BACKUP_DIR/original_config.jsonc" ]]; then
+            cp "$BACKUP_DIR/original_config.jsonc" "$CONFIG_FILE"
+            echo -e "${GREEN}✅  Restored original config${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Original state marker invalid. Falling back...${NC}"
+            # fallthrough to last backup
+        fi
+        return 0
+    fi
+
+    # Fallback: last timestamped backup (old behaviour)
+    if [[ -d "$BACKUP_DIR" && $(ls -1 "$BACKUP_DIR"/config_*.jsonc 2>/dev/null | wc -l) -gt 0 ]]; then
         LAST_BACKUP=$(ls -1t "$BACKUP_DIR"/config_*.jsonc | head -n 1)
         cp "$LAST_BACKUP" "$CONFIG_FILE"
         echo -e "${GREEN}✅  Restored last backup: $(basename "$LAST_BACKUP")${NC}"
